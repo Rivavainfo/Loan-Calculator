@@ -221,6 +221,7 @@
 
         // Function to format numbers with commas
         const formatNumber = (num) => {
+            if (isNaN(num)) return '₹0.00';
             return parseFloat(num).toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -235,7 +236,6 @@
             const tenureYears = parseFloat(tenureYearsInput.value);
 
             if (isNaN(principal) || isNaN(annualRate) || isNaN(tenureYears) || principal <= 0 || annualRate <= 0 || tenureYears <= 0) {
-                errorMessageDiv.classList.remove('hidden');
                 resultsPanel.style.display = 'none';
                 return;
             }
@@ -317,7 +317,9 @@
         });
         
         // Initial calculation on page load with default values
-        document.addEventListener('DOMContentLoaded', calculateLoan);
+        document.addEventListener('DOMContentLoaded', () => {
+            calculateLoan();
+        });
         
         // Fallback for the button click
         loanForm.addEventListener('submit', function(e) {
